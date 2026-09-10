@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steel Soul Tracker – Hollow Knight</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+  .ss-hero{
+    text-align:center; margin:6px 0 30px; padding:26px 20px 22px;
+    background:radial-gradient(ellipse 70% 100% at 50% 0%, rgba(127,214,206,0.09), transparent 70%), var(--bg-panel);
+    border:1px solid var(--border-bright); border-radius:12px; box-shadow:var(--shadow-accent);
+  }
+  .ss-hero .hero-label{font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim);}
+  .ss-hero .hero-number{
+    font-family:'Cinzel',serif; font-weight:700; font-size:clamp(56px,12vw,96px); line-height:1.05;
+    color:var(--accent-bright); text-shadow:0 0 40px rgba(127,214,206,0.35); margin:4px 0 2px;
+  }
+  .ss-hero .hero-sub{font-size:13.5px; color:var(--ink-dim); font-style:italic;}
+
+  .ss-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-bottom:26px;}
+  .ss-stat{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 20px; text-align:center; box-shadow:var(--shadow-accent);
+  }
+  .ss-stat .num{font-family:'Cinzel',serif; font-size:32px; color:var(--accent-bright); font-weight:700;}
+  .ss-stat .lbl{font-size:12.5px; color:var(--ink-dim); font-style:italic; margin-top:4px; letter-spacing:0.02em;}
+  .ss-stat.pb .num{color:var(--void-bright);}
+
+  .ss-causes{display:flex; flex-direction:column; gap:7px;}
+  .ss-cause-row{display:flex; align-items:center; gap:10px; font-size:13.5px;}
+  .ss-cause-row .name{width:150px; flex-shrink:0; color:var(--ink);}
+  .ss-cause-bar-track{flex:1; height:9px; background:var(--border); border-radius:5px; overflow:hidden;}
+  .ss-cause-bar-fill{height:100%; background:linear-gradient(90deg,var(--accent-dim),var(--accent));}
+  .ss-cause-count{width:26px; text-align:right; color:var(--ink-dim); font-family:'Cinzel',serif; font-size:12px;}
+
+  table.ss-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.ss-table th{
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-dim); text-align:left; padding:8px 10px; border-bottom:1px solid var(--border-bright);
+  }
+  table.ss-table td{padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  table.ss-table tr.success td{background:rgba(92,174,116,0.06);}
+  table.ss-table tr.success td:first-child{border-left:2px solid var(--green-bright);}
+  table.ss-table tr.running td{background:rgba(127,214,206,0.08);}
+  table.ss-table tr.running td:first-child{border-left:2px solid var(--accent);}
+  table.ss-table tr:hover td{background:rgba(255,255,255,0.02);}
+  .clip-badges{display:flex; flex-direction:column; gap:4px;}
+  .clip-link{
+    color:var(--accent); text-decoration:none; font-size:12px; display:inline-flex; align-items:center; gap:5px;
+    border:1px solid var(--border); border-radius:20px; padding:2px 9px; width:fit-content; transition:all .12s;
+  }
+  .clip-link:hover{color:var(--accent-bright); border-color:var(--border-bright); background:rgba(127,214,206,0.06);}
+  .clip-link .cat{color:var(--ink-dim); font-style:italic;}
+  .badge-success{color:var(--green-bright); font-family:'Cinzel',serif; font-size:11px;}
+  .badge-fail{color:var(--red); font-family:'Cinzel',serif; font-size:11px;}
+  .badge-running{color:var(--accent-bright); font-family:'Cinzel',serif; font-size:11px;}
+  .boss-list{font-size:12.5px; color:var(--ink-dim); line-height:1.5;}
+
+  .refresh-note{text-align:center; font-size:12px; color:var(--ink-dim); font-style:italic; margin:-14px 0 24px;}
+  .refresh-note .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:5px; animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+  .empty-state{text-align:center; padding:40px 20px; color:var(--ink-dim); font-style:italic;}
+</style>
+</head>
+<body data-theme="hk">
+<div class="page-wrapper">
+
+  <header class="site-header">
+    <a class="nav-link" href="index.html">← Übersicht</a>
+    <h1>Steel Soul</h1>
+    <p class="subtitle">No-Death-Tracker · lädt live aus Google Sheets</p>
+    <div class="header-ornament"><span>💀</span></div>
+  </header>
+
+  <div class="refresh-note"><span class="dot"></span><span id="refresh-status">wird geladen…</span></div>
+
+  <div class="ss-hero">
+    <div class="hero-label">Aktueller Versuch</div>
+    <div class="hero-number" id="hero-attempt">–</div>
+    <div class="hero-sub" id="hero-sub">wird geladen…</div>
+  </div>
+
+  <div class="ss-grid">
+    <div class="ss-stat"><div class="num" id="stat-total">–</div><div class="lbl">Versuche gesamt</div></div>
+    <div class="ss-stat"><div class="num" id="stat-success">–</div><div class="lbl">Erfolgreiche Runs</div></div>
+    <div class="ss-stat"><div class="num" id="stat-failed">–</div><div class="lbl">Gescheiterte Runs</div></div>
+    <div class="ss-stat pb"><div class="num" id="stat-pb">–</div><div class="lbl">PB · meiste Bosse besiegt</div></div>
+    <div class="ss-stat"><div class="num" id="stat-clips">–</div><div class="lbl">Clips gesamt</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><span class="icon">💀</span>
+      <div class="titles"><h2>Häufigste Todesursachen</h2><div class="sub">Top 5 aus allen Versuchen</div></div>
+    </div>
+    <div class="section-body">
+      <div class="ss-causes" id="causes-list"></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:16px;">
+    <div class="section-head"><span class="icon">📜</span>
+      <div class="titles"><h2>Bisherige Runs</h2><div class="sub">Status · besiegte Bosse · Clips — neueste zuerst</div></div>
+    </div>
+    <div class="section-body">
+      <div id="table-wrap"><div class="empty-state">Noch keine Versuche eingetragen.</div></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    Fanprojekt · keine offizielle Verbindung zu Team Cherry · Daten aus Google Sheets, aktualisiert alle paar Sekunden
+  </footer>
+</div>
+
+<script src="steelsoul-config.js"></script>
+<script src="steelsoul-data.js"></script>
+<script>
+  function fmtCause(c){ return c || '—'; }
+
+  function isUrl(str){ return /^https?:\/\//i.test(str); }
+
+  function clipBadges(clips){
+    if(!clips || !clips.length) return '–';
+    return '<div class="clip-badges">' + clips.map(c => {
+      const content = `🎬 <span class="cat">${c.label}</span>`;
+      return isUrl(c.label)
+        ? `<a class="clip-link" href="${c.label}" target="_blank" rel="noopener">${content}</a>`
+        : `<span class="clip-link">${content}</span>`;
+    }).join('') + '</div>';
+  }
+
+  function bossList(bosses){
+    if(!bosses || !bosses.length) return '–';
+    return `<div class="boss-list">${bosses.join(', ')}</div>`;
+  }
+
+  function statusCell(r){
+    if(r.running) return '<span class="badge-running">⏳ Läuft gerade</span>';
+    if(r.success) return '<span class="badge-success">✓ Geschafft</span>';
+    if(r.failed) return '<span class="badge-fail">✕ ' + fmtCause(r.deathCause) + '</span>';
+    return '–';
+  }
+
+  function render(runs, stats){
+    document.getElementById('hero-attempt').textContent = stats.currentAttempt != null ? '#' + stats.currentAttempt : '–';
+    document.getElementById('hero-sub').textContent = stats.currentRun
+      ? (stats.currentRun.running ? 'läuft gerade ⏳' : (stats.currentRun.success ? 'geschafft ✓' : 'gescheitert an: ' + (stats.currentRun.deathCause || 'unbekannt')))
+      : 'noch keine Versuche eingetragen';
+
+    document.getElementById('stat-total').textContent = stats.totalAttempts;
+    document.getElementById('stat-success').textContent = stats.successCount;
+    document.getElementById('stat-failed').textContent = stats.failedCount;
+    document.getElementById('stat-pb').textContent = stats.bestBossesKilled || '–';
+    document.getElementById('stat-clips').textContent = stats.totalClips;
+
+    const causesEl = document.getElementById('causes-list');
+    if(!stats.topDeathCauses.length){
+      causesEl.innerHTML = '<div class="empty-state">Noch keine Todesursachen erfasst.</div>';
+    } else {
+      const max = stats.topDeathCauses[0].count;
+      causesEl.innerHTML = stats.topDeathCauses.map(c => `
+        <div class="ss-cause-row">
+          <span class="name">${fmtCause(c.cause)}</span>
+          <div class="ss-cause-bar-track"><div class="ss-cause-bar-fill" style="width:${(c.count/max*100)}%"></div></div>
+          <span class="ss-cause-count">${c.count}×</span>
+        </div>
+      `).join('');
+    }
+
+    const tableWrap = document.getElementById('table-wrap');
+    if(!runs.length){
+      tableWrap.innerHTML = '<div class="empty-state">Noch keine Versuche eingetragen.</div>';
+    } else {
+      const rows = [...runs].reverse().map(r => `
+        <tr class="${r.success ? 'success' : ''} ${r.running ? 'running' : ''}">
+          <td><strong>#${r.attempt}</strong></td>
+          <td>${statusCell(r)}</td>
+          <td>${r.bossesKilled}× ${bossList(r.bosses)}</td>
+          <td>${clipBadges(r.clips)}</td>
+        </tr>
+      `).join('');
+      tableWrap.innerHTML = `
+        <table class="ss-table">
+          <thead><tr><th>Versuch</th><th>Status</th><th>Besiegte Bosse</th><th>Clips</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    document.getElementById('refresh-status').textContent =
+      'aktualisiert um ' + new Date().toLocaleTimeString('de-DE');
+  }
+
+  SteelSoul.startPolling(render, (err) => {
+    document.getElementById('refresh-status').textContent = 'Fehler beim Laden — prüfe die CSV-Freigabe (' + err.message + ')';
+  });
+</script>
+</body>
+</html>

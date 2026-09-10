@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hollow Knight: Silksong – 100% Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="ss">
+<div class="page-wrapper">
+
+  <header class="site-header">
+    <a class="nav-link" href="index.html">← Übersicht</a>
+    <h1>Silksong</h1>
+    <p class="subtitle">100% Fortschritts-Tracker &amp; Boss-Übersicht</p>
+    <div class="header-ornament"><span>✦</span></div>
+  </header>
+
+  <div class="gauge-wrap">
+    <div class="gauge-circle">
+      <svg viewBox="0 0 170 170">
+        <circle class="track" cx="85" cy="85" r="75"></circle>
+        <circle id="gauge-fill" class="fill" cx="85" cy="85" r="75"></circle>
+      </svg>
+      <div class="gauge-label">
+        <span class="pct" id="gauge-pct">0%</span>
+        <span class="of" id="gauge-of">von 100%</span>
+      </div>
+    </div>
+    <div class="stat-chips" id="stat-chips"></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn" onclick="trackerExpandAll()">Alle aufklappen</button>
+    <button class="tb-btn" onclick="trackerCollapseAll()">Alle einklappen</button>
+    <button class="tb-btn" onclick="trackerExport()">Fortschritt exportieren</button>
+    <button class="tb-btn" onclick="document.getElementById('import-file').click()">Fortschritt importieren</button>
+    <input type="file" id="import-file" accept="application/json" onchange="trackerImportFile(this)">
+    <button class="tb-btn danger" onclick="trackerReset()">Zurücksetzen</button>
+  </div>
+
+  <div id="sections-container"></div>
+
+  <h2 style="font-family:'Cinzel',serif; color:var(--void-bright); font-size:18px; margin:28px 0 10px; text-align:center; letter-spacing:0.04em;">
+    ✧ Bosse &amp; Bonus-Herausforderungen — zählen nicht zur % ✧
+  </h2>
+  <div id="bonus-container"></div>
+
+  <footer class="site-footer">
+    Fanprojekt · keine offizielle Verbindung zu Team Cherry · Fortschritt wird lokal im Browser gespeichert<br>
+    Silksong hat kein 112%-System wie Hollow Knight 1 — die Kappe liegt bei 100%.
+  </footer>
+</div>
+
+<script src="data-ss.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

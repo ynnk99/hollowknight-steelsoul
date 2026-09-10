@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hallownest &amp; Pharloom – Tracker</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .game-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:30px;}
+  .game-grid.three{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:760px){.game-grid.three{grid-template-columns:1fr 1fr;}}
+  @media(max-width:640px){.game-grid{grid-template-columns:1fr;}}
+  .game-card{
+    display:block; text-decoration:none; background:var(--bg-panel); border:1px solid var(--border);
+    border-radius:10px; padding:34px 24px; text-align:center; transition:all .18s; position:relative; overflow:hidden;
+  }
+  .game-card:hover{border-color:var(--border-bright); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.4);}
+  .game-card .glyph{font-size:38px; margin-bottom:14px; display:block;}
+  .game-card h3{font-family:'Cinzel',serif; font-size:22px; letter-spacing:0.04em; color:var(--ink-bright); margin-bottom:8px;}
+  .game-card p{font-style:italic; color:var(--ink-dim); font-size:14px; line-height:1.5;}
+  .card-hk{--accent:#7fd6ce; --accent-bright:#bdf3ec;}
+  .card-hk h3{color:#bdf3ec;}
+  .card-ss{--accent:#d1524f; --accent-bright:#f2938d;}
+  .card-ss h3{color:#f2938d;}
+  .card-steel{--accent:#c7a75e; --accent-bright:#e3c988;}
+  .card-steel h3{color:#e3c988;}
+</style>
+</head>
+<body data-theme="hk">
+<div class="page-wrapper" style="max-width:900px;">
+  <header class="site-header">
+    <h1>Hallownest &amp; Pharloom</h1>
+    <p class="subtitle">Wähle deinen Fortschritts-Tracker</p>
+    <div class="header-ornament"><span>✦</span></div>
+  </header>
+
+  <div class="game-grid three">
+    <a class="game-card card-hk" href="hollow-knight.html">
+      <span class="glyph">💀</span>
+      <h3>Hollow Knight</h3>
+      <p>112%-Tracker · Bosse · Charms · Kolosseum<br>Godmaster Pantheon 1–4 · Path of Pain</p>
+    </a>
+    <a class="game-card card-ss" href="silksong.html">
+      <span class="glyph">🧵</span>
+      <h3>Silksong</h3>
+      <p>100%-Tracker · Werkzeuge · Fadenkünste<br>Alle 48 Bosse aus Akt 1–3</p>
+    </a>
+    <a class="game-card card-steel" href="steelsoul-landing.html">
+      <span class="glyph">⚔</span>
+      <h3>Steel Soul</h3>
+      <p>No-Death-Tracker · live aus Google Sheets<br>Versuche, Todesursachen, Clips</p>
+    </a>
+  </div>
+
+  <footer class="site-footer">
+    Fanprojekt · keine offizielle Verbindung zu Team Cherry · Fortschritt wird lokal im Browser gespeichert
+  </footer>
+</div>
+</body>
+</html>
