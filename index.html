@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steel Soul Tracker – Hollow Knight</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <header class="site-header">
+    <div class="emblem">💀</div>
+    <h1>Steel Soul</h1>
+    <p class="subtitle">No-Death-Tracker &middot; lädt live aus Google Sheets</p>
+    <div class="header-ornament"><span>✦</span></div>
+  </header>
+
+  <div class="refresh-note"><span class="dot"></span><span id="refresh-status">wird geladen…</span></div>
+
+  <div class="hero-plaque">
+    <span class="corner-tl"></span><span class="corner-tr"></span><span class="corner-bl"></span><span class="corner-br"></span>
+    <div class="hero-label">Aktueller Versuch</div>
+    <div class="hero-number" id="hero-attempt">–</div>
+    <div class="hero-sub" id="hero-sub">wird geladen…</div>
+  </div>
+
+  <div class="ss-grid">
+    <div class="ss-stat"><div class="num" id="stat-total">–</div><div class="lbl">Versuche gesamt</div></div>
+    <div class="ss-stat"><div class="num" id="stat-success">–</div><div class="lbl">Erfolgreiche Runs</div></div>
+    <div class="ss-stat fail"><div class="num" id="stat-failed">–</div><div class="lbl">Gescheiterte Runs</div></div>
+    <div class="ss-stat pb"><div class="num" id="stat-pb">–</div><div class="lbl">PB &middot; meiste Bosse besiegt</div></div>
+    <div class="ss-stat"><div class="num" id="stat-clips">–</div><div class="lbl">Clips gesamt</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><span class="icon">💀</span>
+      <div class="titles"><h2>Häufigste Todesursachen</h2><div class="sub">Top 5 aus allen Versuchen</div></div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section-body">
+      <div class="ss-causes" id="causes-list"></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:16px;">
+    <div class="section-head"><span class="icon">📜</span>
+      <div class="titles"><h2>Bisherige Runs</h2><div class="sub">Status &middot; besiegte Bosse &middot; Clips — nach Versuchsnummer aufsteigend</div></div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section-body">
+      <div id="table-wrap"><div class="empty-state">Noch keine Versuche eingetragen.</div></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    Fanprojekt · keine offizielle Verbindung zu Team Cherry<br>
+    Daten aus Google Sheets, aktualisiert alle paar Sekunden
+  </footer>
+</div>
+
+<script src="steelsoul-config.js"></script>
+<script src="steelsoul-data.js"></script>
+<script>
+  function fmtCause(c){ return c || '—'; }
+  function isUrl(str){ return /^https?:\/\//i.test(str || ''); }
+
+  function clipBadges(clips){
+    if(!clips || !clips.length) return '–';
+    return '<div class="clip-badges">' + clips.map(c => {
+      const label = c.category || 'Clip';
+      if(c.link && isUrl(c.link)){
+        return `<a class="clip-link" href="${c.link}" target="_blank" rel="noopener">🎬 ${label}</a>`;
+      }
+      return `<span class="clip-tag">🎬 ${label}</span>`;
+    }).join('') + '</div>';
+  }
+
+  function bossList(bosses){
+    if(!bosses || !bosses.length) return '–';
+    return `<div class="boss-list">${bosses.join(', ')}</div>`;
+  }
+
+  function statusBadge(r){
+    if(r.running) return '<span class="badge badge-running">⏳ Läuft gerade</span>';
+    if(r.success) return '<span class="badge badge-success">✓ Geschafft</span>';
+    if(r.failed) return '<span class="badge badge-fail">✕ ' + fmtCause(r.deathCause) + '</span>';
+    return '–';
+  }
+
+  function render(runs, stats){
+    document.getElementById('hero-attempt').textContent = stats.currentAttempt != null ? '#' + stats.currentAttempt : '–';
+    const heroSub = document.getElementById('hero-sub');
+    heroSub.classList.remove('is-running','is-success','is-failed');
+    if(stats.currentRun){
+      if(stats.currentRun.running){ heroSub.textContent = 'läuft gerade ⏳'; heroSub.classList.add('is-running'); }
+      else if(stats.currentRun.success){ heroSub.textContent = 'geschafft ✓'; heroSub.classList.add('is-success'); }
+      else { heroSub.textContent = 'gescheitert an: ' + (stats.currentRun.deathCause || 'unbekannt'); heroSub.classList.add('is-failed'); }
+    } else {
+      heroSub.textContent = 'noch keine Versuche eingetragen';
+    }
+
+    document.getElementById('stat-total').textContent = stats.totalAttempts;
+    document.getElementById('stat-success').textContent = stats.successCount;
+    document.getElementById('stat-failed').textContent = stats.failedCount;
+    document.getElementById('stat-pb').textContent = stats.bestBossesKilled || '–';
+    document.getElementById('stat-clips').textContent = stats.totalClips;
+
+    const causesEl = document.getElementById('causes-list');
+    if(!stats.topDeathCauses.length){
+      causesEl.innerHTML = '<div class="empty-state">Noch keine Todesursachen erfasst.</div>';
+    } else {
+      const max = stats.topDeathCauses[0].count;
+      causesEl.innerHTML = stats.topDeathCauses.map(c => `
+        <div class="ss-cause-row">
+          <span class="name">${fmtCause(c.cause)}</span>
+          <div class="ss-cause-bar-track"><div class="ss-cause-bar-fill" style="width:${(c.count/max*100)}%"></div></div>
+          <span class="ss-cause-count">${c.count}×</span>
+        </div>
+      `).join('');
+    }
+
+    const tableWrap = document.getElementById('table-wrap');
+    if(!runs.length){
+      tableWrap.innerHTML = '<div class="empty-state">Noch keine Versuche eingetragen.</div>';
+    } else {
+      const rows = runs.map(r => `
+        <tr class="${r.success ? 'success' : ''} ${r.running ? 'running' : ''} ${r.failed ? 'failed' : ''}">
+          <td>#${r.attempt}</td>
+          <td>${statusBadge(r)}</td>
+          <td>${r.bossesKilled}× ${bossList(r.bosses)}</td>
+          <td>${clipBadges(r.clips)}</td>
+        </tr>
+      `).join('');
+      tableWrap.innerHTML = `
+        <table class="ss-table">
+          <thead><tr><th>Versuch</th><th>Status</th><th>Besiegte Bosse</th><th>Clips</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    document.getElementById('refresh-status').textContent =
+      'aktualisiert um ' + new Date().toLocaleTimeString('de-DE');
+  }
+
+  SteelSoul.startPolling(render, (err) => {
+    document.getElementById('refresh-status').textContent = 'Fehler beim Laden — prüfe die CSV-Freigabe (' + err.message + ')';
+  });
+</script>
+</body>
+</html>
