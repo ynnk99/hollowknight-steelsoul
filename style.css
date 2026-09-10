@@ -72,6 +72,10 @@ body::after{
   border:1px solid var(--border-bright);
   box-shadow:0 0 24px rgba(127,214,206,0.18), inset 0 0 10px rgba(0,0,0,0.6);
 }
+.site-header .emblem img{
+  width:66%; height:66%; object-fit:contain;
+  filter:drop-shadow(0 0 6px rgba(127,214,206,0.35));
+}
 .site-header h1{
   font-family:'Cinzel',serif; font-weight:700; letter-spacing:0.09em;
   font-size:clamp(30px,5.5vw,48px); color:var(--ink-bright);
@@ -105,7 +109,6 @@ body::after{
   border-radius:12px;
   box-shadow:0 0 50px rgba(127,214,206,0.06), inset 0 0 0 1px rgba(255,255,255,0.02);
 }
-.hero-plaque::before,.hero-plaque::after,
 .hero-plaque .corner-tl,.hero-plaque .corner-tr,.hero-plaque .corner-bl,.hero-plaque .corner-br{
   content:""; position:absolute; width:11px; height:11px; border:1px solid var(--gold); opacity:0.6;
 }
