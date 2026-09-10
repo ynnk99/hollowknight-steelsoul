@@ -96,7 +96,11 @@ const SteelSoul = (function () {
         clips: clipsByAttempt[attempt] || [],
       });
     }
-    return runs;
+    // Zeilen ohne gesetzten Status (Spalte B leer) sind nur vorbereitete
+    // Versuchsnummern (z.B. für Dropdowns) und keine echten Versuche.
+    return runs
+      .filter(r => r.status !== '')
+      .sort((a, b) => (parseInt(a.attempt, 10) || 0) - (parseInt(b.attempt, 10) || 0));
   }
 
   function computeStats(runs) {

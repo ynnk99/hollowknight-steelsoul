@@ -102,7 +102,7 @@
 
   <div class="section" style="margin-top:16px;">
     <div class="section-head"><span class="icon">📜</span>
-      <div class="titles"><h2>Bisherige Runs</h2><div class="sub">Status · besiegte Bosse · Clips — neueste zuerst</div></div>
+      <div class="titles"><h2>Bisherige Runs</h2><div class="sub">Status · besiegte Bosse · Clips — nach Versuchsnummer aufsteigend</div></div>
     </div>
     <div class="section-body">
       <div id="table-wrap"><div class="empty-state">Noch keine Versuche eingetragen.</div></div>
@@ -173,7 +173,7 @@
     if(!runs.length){
       tableWrap.innerHTML = '<div class="empty-state">Noch keine Versuche eingetragen.</div>';
     } else {
-      const rows = [...runs].reverse().map(r => `
+      const rows = runs.map(r => `
         <tr class="${r.success ? 'success' : ''} ${r.running ? 'running' : ''}">
           <td><strong>#${r.attempt}</strong></td>
           <td>${statusCell(r)}</td>
