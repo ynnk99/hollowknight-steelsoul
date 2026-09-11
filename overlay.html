@@ -197,7 +197,7 @@
       document.getElementById('p5-clear-time').textContent = PantheonSoul.formatElapsed(state.clearedRun.completionMs);
     } else {
       const attemptEl = document.getElementById('p5-attempt');
-      attemptEl.textContent = state.current ? '#' + state.current.attempt : '–';
+      attemptEl.textContent = state.current ? state.current.attempt : '–';
 
       const pbEl = document.getElementById('p5-pb');
       if(state.clearedRun){
