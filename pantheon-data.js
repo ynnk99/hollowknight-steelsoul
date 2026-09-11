@@ -92,12 +92,14 @@ const PantheonSoul = (function () {
       if (rk !== undefined && rk > pbRank) { pbRank = rk; pbBoss = r.deathCause; }
     });
 
-    // Timer-Steuerzellen
+    // Timer: nur noch die serverseitig geschriebenen Zeitstempel lesen.
+    // X1/X2 (Checkboxen) werden hier bewusst NICHT mehr gelesen – die sind
+    // reine Nutzer-Eingabe fürs Apps Script, nicht für die Zeitberechnung.
     const timerCells = STEELSOUL_CONFIG.pantheonTimerCells;
-    const timerRunning = isChecked(cellValue(rows, timerCells.running));
-    const timerReset = isChecked(cellValue(rows, timerCells.reset));
+    const timerStartTs = Number(cellValue(rows, timerCells.startTs)) || 0;
+    const timerElapsedOffset = Number(cellValue(rows, timerCells.elapsed)) || 0;
 
-    return { runs, current, pbBoss, fullClear, timerRunning, timerReset };
+    return { runs, current, pbBoss, fullClear, timerStartTs, timerElapsedOffset };
   }
 
   async function fetchPantheonState() {
@@ -105,36 +107,26 @@ const PantheonSoul = (function () {
     return parsePantheonState(rows);
   }
 
-  // ── Client-seitiger Stoppuhr-Zustand ──
-  // Google Sheets kann uns nicht "pushen", wir pollen nur den Zustand der
-  // Checkboxen. Der Timer selbst läuft komplett lokal im Browser, damit er
-  // flüssig tickt (nicht nur alle paar Sekunden springt).
-  let elapsedMs = 0;
-  let runningSince = null;
-  let lastRunning = false;
+  // ── Timer-Anzeige: rein rechnerisch aus Server-Zeitstempel + "jetzt" ──
+  // Kein lokaler Zustand mehr nötig (kein elapsedMs/runningSince), dadurch
+  // übersteht der Timer jeden Reload der Overlay-Seite verlustfrei – der
+  // "wahre" Zustand steht komplett im Sheet (siehe apps-script-timer.gs).
+  let _timerStartTs = 0;
+  let _timerElapsedOffset = 0;
 
-  function updateTimerControl(running, reset) {
-    if (reset) {
-      elapsedMs = 0;
-      runningSince = running ? Date.now() : null;
-      lastRunning = running;
-      return;
-    }
-    if (running && !lastRunning) {
-      runningSince = Date.now();
-    } else if (!running && lastRunning && runningSince) {
-      elapsedMs += Date.now() - runningSince;
-      runningSince = null;
-    }
-    lastRunning = running;
+  function setTimerState(startTs, elapsedOffset) {
+    _timerStartTs = startTs || 0;
+    _timerElapsedOffset = elapsedOffset || 0;
   }
 
   function currentElapsedMs() {
-    return elapsedMs + (runningSince ? Date.now() - runningSince : 0);
+    return _timerStartTs > 0
+      ? _timerElapsedOffset + (Date.now() - _timerStartTs)
+      : _timerElapsedOffset;
   }
 
   function currentlyRunning() {
-    return runningSince !== null;
+    return _timerStartTs > 0;
   }
 
   function formatElapsed(ms) {
@@ -148,6 +140,6 @@ const PantheonSoul = (function () {
 
   return {
     fetchOverlayConfig, fetchPantheonState,
-    updateTimerControl, currentElapsedMs, currentlyRunning, formatElapsed,
+    setTimerState, currentElapsedMs, currentlyRunning, formatElapsed,
   };
 })();

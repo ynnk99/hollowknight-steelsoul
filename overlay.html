@@ -143,7 +143,7 @@
       pbEl.textContent = '–';
     }
 
-    PantheonSoul.updateTimerControl(state.timerRunning, state.timerReset);
+    PantheonSoul.setTimerState(state.timerStartTs, state.timerElapsedOffset);
   }
 
   async function pollPantheon(){

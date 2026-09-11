@@ -36,9 +36,16 @@ const STEELSOUL_CONFIG = {
     rank: 'V',  // fortlaufende Nummer, nur zur Orientierung
     name: 'W',  // Bossname, aufsteigend nach Reihenfolge im Pantheon
   },
+  // Timer: X1/X2 sind die Checkboxen, die DU im Sheet anklickst. Ein an das
+  // Sheet gebundenes Apps Script (siehe apps-script-timer.gs) schreibt daraus
+  // einen echten Zeitstempel nach Y1/Y2 – dadurch überlebt der Timer jeden
+  // Browser-/OBS-Reload, weil das Overlay nur noch "jetzt − Startzeitpunkt"
+  // rechnet, statt lokal mitzuzählen.
   pantheonTimerCells: {
-    running: 'X1',
-    reset:   'X2',
+    running: 'X1',  // Checkbox: Start/Pause (von dir angeklickt)
+    reset:   'X2',  // Checkbox: Reset, setzt sich per Script selbst zurück
+    startTs: 'Y1',  // vom Script gesetzt: Zeitstempel (ms) seit Start, 0 = pausiert
+    elapsed: 'Y2',  // vom Script gesetzt: bereits angesammelte Zeit (ms) – auch manuell überschreibbar
   },
   // Wie oft die Steuer-Zellen (Ansicht + Timer) abgefragt werden – schneller
   // als der normale Refresh, damit Start/Stop/Reset zügig reagiert.
