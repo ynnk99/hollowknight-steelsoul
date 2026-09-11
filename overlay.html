@@ -162,7 +162,7 @@
     attemptEl.classList.toggle('is-success', justCleared);
 
     if(state.current){
-      attemptEl.textContent = '#' + state.current.attempt;
+      attemptEl.textContent = state.current.attempt;
       attemptEl.classList.remove('small-text');
     } else if(justCleared){
       attemptEl.textContent = 'Geschafft!';
