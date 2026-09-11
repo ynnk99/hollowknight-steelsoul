@@ -102,11 +102,12 @@ const PantheonSoul = (function () {
       if (rk !== undefined && rk > pbRank) { pbRank = rk; pbBoss = r.deathCause; }
     });
 
-    // Geschafft: der letzte Versuch mit ✅ UND gespeicherter Abschlusszeit.
-    // Bleibt dauerhaft bestehen, auch wenn danach neue Versuche folgen.
+    // Geschafft: der letzte Versuch mit ✅. Bleibt dauerhaft bestehen, auch
+    // wenn danach neue Versuche folgen. (0ms ist ein gültiger Wert, z.B.
+    // wenn der Timer nie gestartet wurde — deshalb NICHT auf "truthy" prüfen.)
     let clearedRun = null;
     runs.forEach(r => {
-      if (r.success && r.completionMs) clearedRun = r;
+      if (r.success) clearedRun = r;
     });
     const fullClear = !!clearedRun;
 
