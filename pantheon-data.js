@@ -21,6 +21,15 @@ const PantheonSoul = (function () {
     return ['TRUE', 'WAHR', '1', 'JA', 'YES', '✓', 'X'].includes(v);
   }
 
+  // Robuster als Number(...): Zeitstempel/Millisekunden sind immer reine,
+  // nicht-negative Ganzzahlen. Entfernt vorsorglich alles außer Ziffern,
+  // falls Google Sheets je nach Spracheinstellung Tausendertrennzeichen
+  // exportiert (z.B. "1.757.568.091.234" statt "1757568091234").
+  function parsePlainInt(raw) {
+    const digitsOnly = (raw || '').toString().replace(/[^\d]/g, '');
+    return digitsOnly ? parseInt(digitsOnly, 10) : 0;
+  }
+
   function classifyPantheonStatus(raw) {
     const v = (raw || '').toString().trim();
     if (!v) return '';
@@ -66,6 +75,7 @@ const PantheonSoul = (function () {
     }
 
     // Versuche einlesen (Zeile 1 = Überschrift, überspringen)
+    const completionIdx = colLetterToIndex(cols.completionTime);
     const runs = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
@@ -75,31 +85,39 @@ const PantheonSoul = (function () {
       const statusRaw = (row[statusIdx] || '').toString().trim();
       const status = classifyPantheonStatus(statusRaw);
       const deathCause = (row[causeIdx] || '').toString().trim();
-      runs.push({ attempt, status, success: status === 'success', failed: status === 'failed', deathCause });
+      const completionMs = parsePlainInt((row[completionIdx] || '').toString().trim());
+      runs.push({ attempt, status, success: status === 'success', failed: status === 'failed', deathCause, completionMs });
     }
 
     // aktueller Versuch = oberste Zeile ohne Status
     const current = runs.find(r => r.status === '') || null;
 
-    // Personal Best: unter allen ❌-Versuchen der am weitesten unten
-    // stehende (= am weitesten in der Reihenfolge gekommene) Bossname.
-    // Ein ✅ (vollständiger Clear) schlägt automatisch jeden Boss-Treffer.
-    let pbBoss = null, pbRank = -1, fullClear = false;
+    // Personal Best (für gescheiterte Versuche): unter allen ❌-Versuchen der
+    // am weitesten unten stehende (= am weitesten in der Reihenfolge
+    // gekommene) Bossname.
+    let pbBoss = null, pbRank = -1;
     runs.forEach(r => {
-      if (r.success) { fullClear = true; return; }
       if (!r.failed || !r.deathCause || r.deathCause === '-') return;
       const rk = rankByName[r.deathCause.toLowerCase()];
       if (rk !== undefined && rk > pbRank) { pbRank = rk; pbBoss = r.deathCause; }
     });
 
+    // Geschafft: der letzte Versuch mit ✅ UND gespeicherter Abschlusszeit.
+    // Bleibt dauerhaft bestehen, auch wenn danach neue Versuche folgen.
+    let clearedRun = null;
+    runs.forEach(r => {
+      if (r.success && r.completionMs) clearedRun = r;
+    });
+    const fullClear = !!clearedRun;
+
     // Timer: nur noch die serverseitig geschriebenen Zeitstempel lesen.
     // X1/X2 (Checkboxen) werden hier bewusst NICHT mehr gelesen – die sind
     // reine Nutzer-Eingabe fürs Apps Script, nicht für die Zeitberechnung.
     const timerCells = STEELSOUL_CONFIG.pantheonTimerCells;
-    const timerStartTs = Number(cellValue(rows, timerCells.startTs)) || 0;
-    const timerElapsedOffset = Number(cellValue(rows, timerCells.elapsed)) || 0;
+    const timerStartTs = parsePlainInt(cellValue(rows, timerCells.startTs));
+    const timerElapsedOffset = parsePlainInt(cellValue(rows, timerCells.elapsed));
 
-    return { runs, current, pbBoss, fullClear, timerStartTs, timerElapsedOffset };
+    return { runs, current, pbBoss, fullClear, clearedRun, timerStartTs, timerElapsedOffset };
   }
 
   async function fetchPantheonState() {
