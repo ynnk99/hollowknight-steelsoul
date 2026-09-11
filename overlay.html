@@ -35,15 +35,32 @@
     background:linear-gradient(180deg, rgba(15,22,30,0.88), rgba(6,9,14,0.88));
     border:1px solid rgba(199,167,94,0.5);
     border-radius:14px;
-    padding:18px 36px 22px;
+    padding:20px 40px 24px;
     box-shadow:0 0 40px rgba(0,0,0,0.6), inset 0 0 36px rgba(127,214,206,0.05);
     backdrop-filter:blur(2px);
+    transition:border-color .4s, box-shadow .4s;
   }
-  .overlay-box .corner{position:absolute; width:12px; height:12px; border:1px solid #c7a75e; opacity:0.65;}
-  .overlay-box .c-tl{top:7px; left:7px; border-right:none; border-bottom:none;}
-  .overlay-box .c-tr{top:7px; right:7px; border-left:none; border-bottom:none;}
-  .overlay-box .c-bl{bottom:7px; left:7px; border-right:none; border-top:none;}
-  .overlay-box .c-br{bottom:7px; right:7px; border-left:none; border-top:none;}
+  .overlay-box.is-success{
+    border-color:rgba(143,224,168,0.6);
+    box-shadow:0 0 50px rgba(92,174,116,0.22), inset 0 0 36px rgba(92,174,116,0.08);
+  }
+
+  .flourish{position:absolute; width:34px; height:34px; opacity:0.85; pointer-events:none;}
+  .flourish.tl{top:6px; left:6px;}
+  .flourish.tr{top:6px; right:6px; transform:scaleX(-1);}
+  .flourish.bl{bottom:6px; left:6px; transform:scaleY(-1);}
+  .flourish.br{bottom:6px; right:6px; transform:scale(-1,-1);}
+  .flourish path{stroke:#c7a75e; transition:stroke .4s;}
+  .flourish circle{fill:#c7a75e; transition:fill .4s;}
+  .overlay-box.is-success .flourish path{stroke:#8fe0a8;}
+  .overlay-box.is-success .flourish circle{fill:#8fe0a8;}
+
+  .success-banner{
+    display:none; align-items:center; justify-content:center; gap:8px;
+    font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    color:#8fe0a8; text-shadow:0 0 16px rgba(92,174,116,0.5);
+  }
+  .overlay-box.is-success .success-banner{display:flex;}
 
   .view-title{
     font-family:'Cinzel',serif; font-size:14px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase;
@@ -58,6 +75,7 @@
   .attempt-label{font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.18em; text-transform:uppercase; color:#9fb3ba;}
   .attempt-number{font-family:'Cinzel',serif; font-size:76px; font-weight:700; color:#c3f5ee; line-height:1; text-shadow:0 0 26px rgba(127,214,206,0.6); margin-top:2px;}
   .attempt-number.small-text{font-size:30px; max-width:220px;}
+  .attempt-number.is-success{color:#8fe0a8; text-shadow:0 0 26px rgba(92,174,116,0.6);}
 
   .info-block{display:flex; flex-direction:column; gap:10px; min-width:220px;}
   .info-row{font-size:22px; display:flex; align-items:baseline; gap:10px;}
@@ -75,8 +93,12 @@
 
   <!-- ── STEEL SOUL VIEW ── -->
   <div class="overlay-box" id="steelsoul-view" style="display:none;">
-    <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+    <svg class="flourish tl" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish tr" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish bl" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish br" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
     <div class="view-title">Steel Soul</div>
+    <div class="success-banner">✓ Versuch geschafft</div>
     <div class="content-row">
       <div class="attempt-block">
         <div class="attempt-label">Versuch</div>
@@ -91,8 +113,12 @@
 
   <!-- ── PANTHEON 5 VIEW ── -->
   <div class="overlay-box" id="pantheon-view" style="display:none;">
-    <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+    <svg class="flourish tl" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish tr" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish bl" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
+    <svg class="flourish br" viewBox="0 0 34 34"><path d="M2 20 C2 8, 8 2, 20 2" fill="none" stroke-width="1.3"/><path d="M2 20 C6 20, 9 17, 9 12" fill="none" stroke-width="1"/><circle cx="20" cy="2" r="1.6"/><circle cx="2" cy="20" r="1.6"/></svg>
     <div class="view-title">Pantheon 5</div>
+    <div class="success-banner">✓ Pantheon vollständig geschafft</div>
     <div class="content-row">
       <div class="attempt-block">
         <div class="attempt-label">Versuch</div>
@@ -111,22 +137,35 @@
 <script>
   function bossLabel(n){ return n + (n === 1 ? ' Boss' : ' Bosse'); }
 
-  // ── Steel Soul rendering (unverändert in der Logik) ──
+  // ── Steel Soul rendering ──
   function renderSteelSoul(runs, stats){
     document.getElementById('ov-attempt').textContent = stats.currentAttempt ?? '–';
     document.getElementById('ov-pb').textContent = stats.bestBossesKilled ? bossLabel(stats.bestBossesKilled) : '–';
     const current = stats.currentRun;
     document.getElementById('ov-bosses').textContent = current ? bossLabel(current.bossesKilled) : '–';
+
+    const isSuccess = !!(current && current.success);
+    document.getElementById('steelsoul-view').classList.toggle('is-success', isSuccess);
+    document.getElementById('ov-attempt').classList.toggle('is-success', isSuccess);
   }
   SteelSoul.startPolling(renderSteelSoul, (err) => console.error('Steel Soul Overlay:', err));
 
   // ── Pantheon 5 rendering ──
   function renderPantheon(state){
+    const box = document.getElementById('pantheon-view');
     const attemptEl = document.getElementById('p5-attempt');
+
+    // "Geschafft" = kein offener Versuch mehr UND der letzte Eintrag war ein ✅
+    const latestRun = state.runs && state.runs.length ? state.runs[state.runs.length - 1] : null;
+    const justCleared = !state.current && !!(latestRun && latestRun.success);
+
+    box.classList.toggle('is-success', justCleared);
+    attemptEl.classList.toggle('is-success', justCleared);
+
     if(state.current){
-      attemptEl.textContent = state.current.attempt;
+      attemptEl.textContent = '#' + state.current.attempt;
       attemptEl.classList.remove('small-text');
-    } else if(state.fullClear){
+    } else if(justCleared || state.fullClear){
       attemptEl.textContent = 'Geschafft!';
       attemptEl.classList.add('small-text');
     } else {
@@ -136,7 +175,7 @@
 
     const pbEl = document.getElementById('p5-pb');
     if(state.fullClear){
-      pbEl.textContent = 'Geschafft!';
+      pbEl.textContent = 'Vollständig geschafft';
     } else if(state.pbBoss){
       pbEl.textContent = state.pbBoss;
     } else {
