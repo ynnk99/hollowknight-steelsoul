@@ -1,4 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@font-face{
+  font-family:'Cinzel'; font-style:normal; font-weight:500; font-display:swap;
+  src:url('fonts/cinzel-latin-500-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Cinzel'; font-style:normal; font-weight:600; font-display:swap;
+  src:url('fonts/cinzel-latin-600-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Cinzel'; font-style:normal; font-weight:700; font-display:swap;
+  src:url('fonts/cinzel-latin-700-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'EB Garamond'; font-style:normal; font-weight:400; font-display:swap;
+  src:url('fonts/eb-garamond-latin-400-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'EB Garamond'; font-style:normal; font-weight:500; font-display:swap;
+  src:url('fonts/eb-garamond-latin-500-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'EB Garamond'; font-style:normal; font-weight:600; font-display:swap;
+  src:url('fonts/eb-garamond-latin-600-normal.woff2') format('woff2');
+}
+@font-face{
+  font-family:'EB Garamond'; font-style:italic; font-weight:400; font-display:swap;
+  src:url('fonts/eb-garamond-latin-400-italic.woff2') format('woff2');
+}
 
 :root{
   --bg-deep:#04060a;
@@ -211,6 +238,54 @@ footer.site-footer{
   text-align:center; margin-top:44px; font-size:12px; color:var(--ink-dim); font-style:italic; line-height:1.7;
 }
 footer.site-footer a{color:var(--accent-dim);}
+
+.footer-privacy-link{
+  color:var(--ink-dim); opacity:0.85; text-decoration:none; transition:color .15s;
+}
+.footer-privacy-link:hover{color:var(--accent-bright); text-decoration:underline;}
+
+/* ── Datenschutz / Impressum Modal ── */
+.privacy-modal-backdrop{
+  position:fixed; inset:0; z-index:9999; background:rgba(2,3,5,0.8);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.privacy-modal-box{
+  position:relative; background:linear-gradient(180deg, #0e141d 0%, #05070a 100%);
+  border:1px solid var(--border-gold); border-radius:10px;
+  max-width:680px; width:100%; max-height:85vh; overflow-y:auto;
+  box-shadow:0 12px 60px rgba(0,0,0,0.7);
+}
+.privacy-modal-close{
+  position:sticky; top:0; float:right; margin:14px 16px 0 0;
+  background:transparent; border:1px solid var(--border); color:var(--ink-dim);
+  font-size:14px; width:28px; height:28px; border-radius:5px; cursor:pointer; z-index:1;
+  transition:color .15s, border-color .15s;
+}
+.privacy-modal-close:hover{color:var(--accent-bright); border-color:var(--border-bright);}
+.privacy-modal-content{
+  padding:30px 32px 26px; color:var(--ink); font-family:'EB Garamond',Georgia,serif;
+  font-size:14.5px; line-height:1.75;
+}
+.privacy-modal-content h2{
+  font-family:'Cinzel',serif; font-size:19px; font-weight:600; color:var(--gold-bright);
+  letter-spacing:0.06em; margin:0 0 20px; padding-bottom:10px; border-bottom:1px solid var(--border);
+}
+.privacy-modal-content h3{
+  font-family:'Cinzel',serif; font-size:11.5px; font-weight:600; color:var(--accent-bright);
+  letter-spacing:0.09em; text-transform:uppercase; margin:22px 0 6px;
+}
+.privacy-modal-content p{margin:0 0 10px;}
+.privacy-modal-content a{color:var(--accent);}
+.privacy-modal-content a:hover{color:var(--accent-bright);}
+.privacy-modal-content code{
+  font-size:12px; background:rgba(127,214,206,0.08); border:1px solid var(--border);
+  border-radius:4px; padding:1px 6px; color:var(--accent-bright);
+}
+.privacy-modal-footer{
+  display:flex; align-items:center; justify-content:flex-end;
+  margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
+}
+.privacy-modal-date{font-size:12px; color:var(--ink-dim);}
 
 @media(max-width:520px){
   .hero-number{font-size:52px;}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Steel Soul Tracker – Hollow Knight</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="vendor/papaparse.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -56,8 +56,77 @@
 
   <footer class="site-footer">
     Fanprojekt · keine offizielle Verbindung zu Team Cherry<br>
-    Daten aus Google Sheets, aktualisiert alle paar Sekunden
+    Daten aus Google Sheets, aktualisiert alle paar Sekunden<br>
+    <a href="#" class="footer-privacy-link" onclick="document.getElementById('privacy-modal').style.display='flex'; return false;">Datenschutz</a>
+    &bull;
+    <a href="#" class="footer-privacy-link" onclick="document.getElementById('impressum-modal').style.display='flex'; return false;">Impressum</a>
   </footer>
+
+  <!-- ── IMPRESSUM MODAL ── -->
+  <div id="impressum-modal" style="display:none;" class="privacy-modal-backdrop" onclick="if(event.target===this)this.style.display='none'">
+    <div class="privacy-modal-box" role="dialog" aria-modal="true" aria-label="Impressum">
+      <button class="privacy-modal-close" onclick="document.getElementById('impressum-modal').style.display='none'">✕</button>
+      <div class="privacy-modal-content">
+        <h2>Impressum</h2>
+        <h3>Angaben gemäß § 5 DDG / § 18 Abs. 1 MStV</h3>
+        <p>
+          [DEIN NAME]<br>
+          (Privatperson, nicht-kommerzielles Fan-Projekt)
+        </p>
+        <h3>Kontakt</h3>
+        <p>
+          E-Mail: <a href="mailto:deine@email.de">deine@email.de</a>
+        </p>
+        <h3>Hinweis</h3>
+        <p>
+          Diese Website ist ein privates, nicht-kommerzielles Fan-Projekt. Es besteht keine Verbindung zu Team Cherry.
+        </p>
+        <div class="privacy-modal-footer">
+          <span class="privacy-modal-date">Stand: September 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DATENSCHUTZERKLÄRUNG MODAL ── -->
+  <div id="privacy-modal" style="display:none;" class="privacy-modal-backdrop" onclick="if(event.target===this)this.style.display='none'">
+    <div class="privacy-modal-box" role="dialog" aria-modal="true" aria-label="Datenschutzerklärung">
+      <button class="privacy-modal-close" onclick="document.getElementById('privacy-modal').style.display='none'">✕</button>
+      <div class="privacy-modal-content">
+        <h2>Datenschutzerklärung</h2>
+
+        <h3>1. Verantwortliche Person</h3>
+        <p>Diese Website ist ein privates, nicht-kommerzielles Fan-Projekt von [DEIN NAME]. Anfragen zum Datenschutz können per E-Mail an <a href="mailto:deine@email.de">deine@email.de</a> gestellt werden.</p>
+
+        <h3>2. Was diese Seite ist</h3>
+        <p>Der Steel Soul Tracker ist ein öffentlich zugängliches Dashboard, das den Fortschritt bei No-Death-Läufen in Hollow Knight anzeigt. Die Daten werden live aus einem öffentlich freigegebenen Google Spreadsheet geladen und regelmäßig aktualisiert. Es werden keine Nutzerdaten auf eigenen Servern gespeichert.</p>
+
+        <h3>3. Keine Cookies, kein Tracking</h3>
+        <p>Diese Seite setzt keine Cookies und verwendet keinen Analyse- oder Tracking-Dienst. Es gibt kein Login und keine Registrierung. Aus diesem Grund ist kein Cookie-Banner erforderlich.</p>
+
+        <h3>4. Google Sheets (Datenabruf)</h3>
+        <p>Beim Aufruf dieser Seite wird automatisch eine Anfrage an ein öffentlich freigegebenes Google Spreadsheet gestellt, um die aktuellen Versuchsdaten zu laden – das ist die Kernfunktion der Seite. Dabei wird deine IP-Adresse im Rahmen der normalen HTTP-Kommunikation an Google LLC (USA) übertragen. Es werden keine weiteren personenbezogenen Daten aus diesem Abruf gespeichert oder verarbeitet.<br>
+        <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der technisch notwendigen Bereitstellung der Kernfunktion dieser Seite).</p>
+        <p>Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Datenschutzerklärung</a></p>
+
+        <h3>5. Schriftarten &amp; Skripte</h3>
+        <p>Alle auf dieser Seite verwendeten Schriftarten (Cinzel, EB Garamond) sowie die Bibliothek zum Einlesen der Tabellendaten (PapaParse) werden lokal von dieser Seite selbst ausgeliefert. Es findet keine Verbindung zu Google Fonts, cdnjs oder anderen Drittanbieter-CDNs statt.</p>
+
+        <h3>6. Lokale Speicherung</h3>
+        <p>Diese Seite nutzt weder <code>localStorage</code> noch Cookies. Es werden keinerlei Daten im Browser gespeichert.</p>
+
+        <h3>7. Hosting</h3>
+        <p>Diese Seite wird über GitHub Pages (GitHub, Inc., USA) gehostet. GitHub kann dabei technische Zugriffsdaten (IP-Adresse, Zeitpunkt) protokollieren. Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Datenschutzerklärung</a>.</p>
+
+        <h3>8. Deine Rechte</h3>
+        <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten sowie das Recht auf Datenübertragbarkeit. Beschwerden kannst du bei der zuständigen Datenschutzbehörde einreichen (in Deutschland: der jeweilige Landesbeauftragte für Datenschutz).</p>
+
+        <div class="privacy-modal-footer">
+          <span class="privacy-modal-date">Stand: September 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="steelsoul-config.js"></script>

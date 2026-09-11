@@ -2,8 +2,22 @@
 
 Fan-Dashboard für No-Death-Läufe (Steel Soul) in Hollow Knight, live verbunden mit einem Google Sheet.
 
-- **`index.html`** – öffentliches Dashboard: aktueller Versuch, Statistiken, Todesursachen, Liste aller Runs mit Bossen & Clips
+- **`index.html`** – öffentliches Dashboard: aktueller Versuch, Statistiken, Todesursachen, Liste aller Runs mit Bossen & Clips, inkl. Impressum/Datenschutz-Links im Footer
 - **`steelsoul-overlay.html`** – schlankes, transparentes Overlay für OBS als Browserquelle
+
+Alle Schriftarten (Cinzel, EB Garamond) und die PapaParse-Bibliothek sind **lokal im Projekt enthalten** (`fonts/`, `vendor/`) – es werden keine Google-Fonts- oder CDN-Anfragen mehr an Dritte gestellt.
+
+## ⚠️ Vor dem Hochladen: Impressum ausfüllen
+
+In `index.html` gibt es zwei Platzhalter, die du ersetzen musst (Suche nach `[DEIN NAME]` und `deine@email.de`):
+
+```html
+[DEIN NAME]
+...
+<a href="mailto:deine@email.de">deine@email.de</a>
+```
+
+Diese Angaben tauchen im Impressum- und im Datenschutz-Modal auf (verlinkt im Footer der Seite).
 
 ## Lokal testen
 
@@ -26,7 +40,7 @@ Tabellenblatt „Steelsoul", erwartetes Layout:
 | G:I | Clip-Bereich – G = Versuch-Referenz, H = Kategorie, I = Twitch-Link (Zeile 1 = Überschrift, wird ignoriert) |
 | J:K | Bosse-Bereich – J = Versuch-Referenz, K = Bossname (Zeile 1 = Überschrift, wird ignoriert). Mehrere Zeilen pro Versuch möglich. |
 
-Zeilen ohne gesetzten Status in Spalte B (z. B. vorbereitete Versuchsnummern für die Dropdowns) werden automatisch ignoriert und tauchen weder in der Liste noch in den Statistiken auf. Der **aktuelle Versuch** ist immer die Zeile mit dem ⏳-Emoji.
+Zeilen ohne gesetzten Status in Spalte B (z. B. vorbereitete Versuchsnummern für die Dropdowns) werden automatisch ignoriert. Der **aktuelle Versuch** ist immer die Zeile mit dem ⏳-Emoji.
 
 **Voraussetzung:** Das Sheet muss auf „Jeder mit dem Link kann ansehen" stehen (Freigeben-Button oben rechts in Google Sheets).
 
@@ -48,25 +62,36 @@ Sheet-ID und `gid` findest du in der URL, wenn das Tabellenblatt in Google Sheet
 
 1. In OBS: Quelle hinzufügen → **Browser**
 2. URL: der gehostete Link zu `steelsoul-overlay.html` (z. B. deine GitHub-Pages-URL + `/steelsoul-overlay.html`)
-3. Breite ca. 480 px, Höhe ca. 160 px
+3. Breite ca. 560 px, Höhe ca. 200 px
 4. Hintergrund ist bereits transparent, kein Häkchen nötig
 
 ## Auf GitHub Pages hosten
 
-1. Repo erstellen, **alle Dateien aus diesem Ordner direkt ins Repo-Root** hochladen (nicht als Unterordner)
+1. Repo erstellen, **alle Dateien und Ordner aus diesem Projekt direkt ins Repo-Root** hochladen (inkl. `fonts/`, `vendor/`, `emblem.png` — nicht als Unterordner)
 2. **Settings → Pages → Source** auf Branch `main`, Ordner `/ (root)` stellen
 3. Nach ein paar Minuten erreichbar unter `https://DEIN-NAME.github.io/DEIN-REPO/`
 
-⚠️ GitHub Pages ist öffentlich. Die Steel-Soul-Versuchsdaten sind dann für jeden einsehbar, der die Seite aufruft (das Sheet selbst bleibt nur zum Lesen freigegeben, nicht zum Bearbeiten).
+## Rechtliches (Impressum & Datenschutz)
+
+Die Seite enthält jetzt ein Impressum- und ein Datenschutz-Modal (Footer-Links auf `index.html`). Kurzfassung, warum:
+
+- **Cookie-Banner:** nicht nötig – die Seite setzt keine Cookies und nutzt kein `localStorage`.
+- **Datenschutzerklärung:** trotzdem sinnvoll, weil beim Laden der Seite technisch IP-Adressen anfallen (GitHub-Hosting-Logs, Live-Abruf aus Google Sheets). Das ist im Modal erklärt, Rechtsgrundlage ist berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO) – keine Einwilligung nötig, da technisch für die Kernfunktion erforderlich.
+- **Impressum:** Da die Seite öffentlich (z. B. über Twitch) erreichbar ist, greift meist die vereinfachte Impressumspflicht nach § 18 Abs. 1 MStV, auch ohne Monetarisierung.
+
+Das ist keine Rechtsberatung – bei Unsicherheit lohnt sich ein kurzer Check bei einem Anwalt oder Dienst wie eRecht24.
 
 ## Projektstruktur
 
 ```
-index.html                 Steel-Soul-Dashboard (Startseite)
+index.html                 Steel-Soul-Dashboard (Startseite), inkl. Impressum/Datenschutz-Modals
 steelsoul-overlay.html     OBS-Browserquelle
 steelsoul-config.js        Konfiguration (CSV-Link, Spalten, Refresh-Intervall)
 steelsoul-data.js          Fetch/Parse/Stats-Logik
 style.css                  Hollow-Knight-Theme
+emblem.png                 Icon im Seitenkopf
+fonts/                     selbst gehostete Cinzel- & EB-Garamond-Schriftdateien
+vendor/                    selbst gehostetes PapaParse (CSV-Parser)
 ```
 
 ---
