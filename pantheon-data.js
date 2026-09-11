@@ -75,7 +75,9 @@ const PantheonSoul = (function () {
     }
 
     // Versuche einlesen (Zeile 1 = Überschrift, überspringen)
-    const completionIdx = colLetterToIndex(cols.completionTime);
+    // completionIdx defensiv: falls completionTime in der Config mal fehlt,
+    // soll nur dieses eine Feature ausfallen statt der ganzen Anzeige.
+    const completionIdx = cols.completionTime ? colLetterToIndex(cols.completionTime) : -1;
     const runs = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
@@ -85,7 +87,7 @@ const PantheonSoul = (function () {
       const statusRaw = (row[statusIdx] || '').toString().trim();
       const status = classifyPantheonStatus(statusRaw);
       const deathCause = (row[causeIdx] || '').toString().trim();
-      const completionMs = parsePlainInt((row[completionIdx] || '').toString().trim());
+      const completionMs = completionIdx >= 0 ? parsePlainInt((row[completionIdx] || '').toString().trim()) : 0;
       runs.push({ attempt, status, success: status === 'success', failed: status === 'failed', deathCause, completionMs });
     }
 

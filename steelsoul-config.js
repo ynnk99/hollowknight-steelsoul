@@ -31,6 +31,7 @@ const STEELSOUL_CONFIG = {
     attempt:    'R',
     status:     'S',   // leer = noch nicht gelaufen, ✅/❌ = Ergebnis
     deathCause: 'T',   // Bossname bei ❌, "-" bei ✅
+    completionTime: 'U', // vom Script automatisch befüllt, sobald S auf ✅ gesetzt wird
   },
   pantheonBossOrder: {
     rank: 'V',  // fortlaufende Nummer, nur zur Orientierung
