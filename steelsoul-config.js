@@ -9,6 +9,41 @@ const STEELSOUL_CONFIG = {
   // Deine Tabelle, Tabellenblatt "Steelsoul" (gid=1668153894)
   csvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=1668153894',
 
+  // ── NEU: Overlay-Steuerung & Pantheon 5 ──────────────────────────────
+  // Gleiche Spreadsheet-ID, aber zwei weitere Tabellenblätter.
+  // gid=XXXXXXXXX unten jeweils durch die echte gid aus der URL ersetzen,
+  // wenn du das jeweilige Tabellenblatt in Google Sheets geöffnet hast
+  // (https://docs.google.com/spreadsheets/d/.../edit?gid=DEINE_GID).
+
+  // Tabellenblatt "Overlay Config": A1 = Pantheon-5-Overlay anzeigen,
+  // A2 = Steel-Soul-Overlay anzeigen (beides Checkboxen).
+  overlayConfigCsvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=1326149486',
+  overlayConfigCells: {
+    showPantheon:  'A1',
+    showSteelsoul: 'A2',
+  },
+
+  // Tabellenblatt "Pantheons": Bereich Q1:T51 = Pantheon-5-Versuche,
+  // V1:W42 = Boss-Reihenfolge (aufsteigend sortiert) für die PB-Ermittlung,
+  // X1 = Timer Start/Stop-Checkbox, X2 = Timer-Reset-Checkbox.
+  pantheonCsvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=266034943',
+  pantheonColumns: {
+    attempt:    'R',
+    status:     'S',   // leer = noch nicht gelaufen, ✅/❌ = Ergebnis
+    deathCause: 'T',   // Bossname bei ❌, "-" bei ✅
+  },
+  pantheonBossOrder: {
+    rank: 'V',  // fortlaufende Nummer, nur zur Orientierung
+    name: 'W',  // Bossname, aufsteigend nach Reihenfolge im Pantheon
+  },
+  pantheonTimerCells: {
+    running: 'X1',
+    reset:   'X2',
+  },
+  // Wie oft die Steuer-Zellen (Ansicht + Timer) abgefragt werden – schneller
+  // als der normale Refresh, damit Start/Stop/Reset zügig reagiert.
+  controlPollIntervalMs: 2000,
+
   // Wie oft neu geladen wird (Millisekunden). 5000 = alle 5 Sekunden.
   refreshIntervalMs: 5000,
 

@@ -11,20 +11,16 @@
   src:url('fonts/cinzel-latin-700-normal.woff2') format('woff2');
 }
 @font-face{
-  font-family:'EB Garamond'; font-style:normal; font-weight:400; font-display:swap;
-  src:url('fonts/eb-garamond-latin-400-normal.woff2') format('woff2');
+  font-family:'Cardo'; font-style:normal; font-weight:400; font-display:swap;
+  src:url('fonts/cardo-latin-400-normal.woff2') format('woff2');
 }
 @font-face{
-  font-family:'EB Garamond'; font-style:normal; font-weight:500; font-display:swap;
-  src:url('fonts/eb-garamond-latin-500-normal.woff2') format('woff2');
+  font-family:'Cardo'; font-style:normal; font-weight:700; font-display:swap;
+  src:url('fonts/cardo-latin-700-normal.woff2') format('woff2');
 }
 @font-face{
-  font-family:'EB Garamond'; font-style:normal; font-weight:600; font-display:swap;
-  src:url('fonts/eb-garamond-latin-600-normal.woff2') format('woff2');
-}
-@font-face{
-  font-family:'EB Garamond'; font-style:italic; font-weight:400; font-display:swap;
-  src:url('fonts/eb-garamond-latin-400-italic.woff2') format('woff2');
+  font-family:'Cardo'; font-style:italic; font-weight:400; font-display:swap;
+  src:url('fonts/cardo-latin-400-italic.woff2') format('woff2');
 }
 
 :root{
@@ -63,7 +59,7 @@ html{background:var(--bg-deep);font-size:16px;}
 body{
   min-height:100vh;
   color:var(--ink);
-  font-family:'EB Garamond',Georgia,serif;
+  font-family:'Cardo',Georgia,serif;
   position:relative;
   background:
     radial-gradient(ellipse 60% 45% at 20% -5%, rgba(127,214,206,0.06) 0%, transparent 60%),
@@ -263,7 +259,7 @@ footer.site-footer a{color:var(--accent-dim);}
 }
 .privacy-modal-close:hover{color:var(--accent-bright); border-color:var(--border-bright);}
 .privacy-modal-content{
-  padding:30px 32px 26px; color:var(--ink); font-family:'EB Garamond',Georgia,serif;
+  padding:30px 32px 26px; color:var(--ink); font-family:'Cardo',Georgia,serif;
   font-size:14.5px; line-height:1.75;
 }
 .privacy-modal-content h2{
