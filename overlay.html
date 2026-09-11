@@ -124,7 +124,7 @@
   function renderPantheon(state){
     const attemptEl = document.getElementById('p5-attempt');
     if(state.current){
-      attemptEl.textContent = '#' + state.current.attempt;
+      attemptEl.textContent = state.current.attempt;
       attemptEl.classList.remove('small-text');
     } else if(state.fullClear){
       attemptEl.textContent = 'Geschafft!';
@@ -136,7 +136,7 @@
 
     const pbEl = document.getElementById('p5-pb');
     if(state.fullClear){
-      pbEl.textContent = 'Vollständig geschafft';
+      pbEl.textContent = 'Geschafft!';
     } else if(state.pbBoss){
       pbEl.textContent = state.pbBoss;
     } else {
