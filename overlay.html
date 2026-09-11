@@ -186,7 +186,9 @@
 
   // ── Pantheon 5 rendering ──
   function renderPantheon(state){
-    const justCleared = !state.current && !!state.clearedRun;
+    // Bleibt dauerhaft bei der "Geschafft"-Ansicht, sobald einmal ein Clear
+    // passiert ist – auch wenn danach neue Versuche (Run 2, 3, ...) folgen.
+    const justCleared = !!state.clearedRun;
 
     document.getElementById('pantheon-view').classList.toggle('is-success', justCleared);
     document.getElementById('p5-normal').style.display = justCleared ? 'none' : 'flex';
