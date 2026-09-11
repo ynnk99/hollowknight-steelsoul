@@ -52,6 +52,17 @@ const PantheonSoul = (function () {
     return {
       showPantheon: isChecked(cellValue(rows, cells.showPantheon)),
       showSteelsoul: isChecked(cellValue(rows, cells.showSteelsoul)),
+      showSilksong: isChecked(cellValue(rows, cells.showSilksong)),
+    };
+  }
+
+  // ── Silksong: einfacher Tode-/Bosse-Zähler ──
+  async function fetchSilksongState() {
+    const rows = await fetchCsvRows(STEELSOUL_CONFIG.silksongCsvUrl);
+    const cells = STEELSOUL_CONFIG.silksongCells;
+    return {
+      deaths: parsePlainInt(cellValue(rows, cells.deaths)),
+      bosses: parsePlainInt(cellValue(rows, cells.bosses)),
     };
   }
 
@@ -160,7 +171,7 @@ const PantheonSoul = (function () {
   }
 
   return {
-    fetchOverlayConfig, fetchPantheonState,
+    fetchOverlayConfig, fetchPantheonState, fetchSilksongState,
     setTimerState, currentElapsedMs, currentlyRunning, formatElapsed,
   };
 })();

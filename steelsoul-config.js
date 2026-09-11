@@ -16,11 +16,23 @@ const STEELSOUL_CONFIG = {
   // (https://docs.google.com/spreadsheets/d/.../edit?gid=DEINE_GID).
 
   // Tabellenblatt "Overlay Config": A1 = Pantheon-5-Overlay anzeigen,
-  // A2 = Steel-Soul-Overlay anzeigen (beides Checkboxen).
+  // A2 = Steel-Soul-Overlay anzeigen, A3 = Silksong-Overlay anzeigen
+  // (alles Checkboxen). Bei mehreren Häkchen gilt die Reihenfolge
+  // Pantheon > Steel Soul > Silksong.
   overlayConfigCsvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=1326149486',
   overlayConfigCells: {
     showPantheon:  'A1',
     showSteelsoul: 'A2',
+    showSilksong:  'A3',
+  },
+
+  // Tabellenblatt "Silksong": A1/B1 = Überschriften "Tode"/"Bosse",
+  // A2 = Anzahl Tode, B2 = Anzahl besiegter Bosse. Ganz simpler Zähler,
+  // kann später erweitert werden.
+  silksongCsvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=2025660023',
+  silksongCells: {
+    deaths: 'A2',
+    bosses: 'B2',
   },
 
   // Tabellenblatt "Pantheons": Bereich Q1:T51 = Pantheon-5-Versuche,
