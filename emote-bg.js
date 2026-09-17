@@ -11,6 +11,7 @@ const EMOTE_BG_CONFIG = {
     'https://cdn.7tv.app/emote/01H6YM1T4R000DNK3M5M1F7Q6Y/2x.webp',
     'https://cdn.7tv.app/emote/01J12HSHG00002X9JFJVAGB0AP/2x.webp',
     'https://cdn.7tv.app/emote/01JT6BRNXNMNNME48GTHG1WJ21/2x.webp',
+    'https://cdn.7tv.app/emote/01HVPR7KHG00084NQRB9SM3D94/2x.webp',
   ],
 
   count: 24,               // wie viele Emote-Sprites gleichzeitig fliegen
