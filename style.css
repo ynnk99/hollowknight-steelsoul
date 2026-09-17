@@ -163,7 +163,7 @@ body::after{
 }
 .ss-stat:hover{border-color:var(--border-bright); transform:translateY(-1px);}
 .ss-stat .num{font-family:'Cinzel',serif; font-size:33px; color:var(--accent-bright); font-weight:700;}
-.ss-stat .lbl{font-size:12px; color:var(--ink-dim); font-style:italic; margin-top:5px; letter-spacing:0.03em;}
+.ss-stat .lbl{font-size:14px; color:var(--ink-dim); font-style:italic; margin-top:5px; letter-spacing:0.03em;}
 .ss-stat.pb .num{color:var(--void-bright);}
 .ss-stat.pb::before{background:linear-gradient(90deg,transparent,var(--void),transparent);}
 .ss-stat.fail .num{color:var(--red-bright);}
