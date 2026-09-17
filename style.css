@@ -50,7 +50,7 @@
   --red:#c0524a;
   --red-bright:#ea8a80;
 
-  --shadow-accent:0 0 40px rgba(120,200,200,0.07);
+  --shadow-accent:none;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
