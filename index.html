@@ -30,7 +30,7 @@
     <div class="ss-stat"><div class="num" id="stat-total">–</div><div class="lbl">Versuche gesamt</div></div>
     <div class="ss-stat fail"><div class="num" id="stat-failed">–</div><div class="lbl">Gescheiterte Runs</div></div>
     <div class="ss-stat pb"><div class="num" id="stat-pb">–</div><div class="lbl">PB &middot; meiste Bosse besiegt</div></div>
-    <div class="ss-stat"><div class="num" id="stat-clips">–</div><div class="lbl">Clips gesamt</div></div>
+    <div class="ss-stat clickable" id="stat-clips-box" onclick="document.getElementById('clips-modal').style.display='flex'"><div class="num" id="stat-clips">–</div><div class="lbl">Clips gesamt</div></div>
   </div>
 
   <div class="section">
@@ -82,6 +82,19 @@
         </p>
         <div class="privacy-modal-footer">
           <span class="privacy-modal-date">Stand: September 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CLIPS MODAL ── -->
+  <div id="clips-modal" style="display:none;" class="privacy-modal-backdrop" onclick="if(event.target===this)this.style.display='none'">
+    <div class="privacy-modal-box" role="dialog" aria-modal="true" aria-label="Alle Clips">
+      <button class="privacy-modal-close" onclick="document.getElementById('clips-modal').style.display='none'">✕</button>
+      <div class="privacy-modal-content">
+        <h2>Alle Clips</h2>
+        <div id="clips-modal-body">
+          <div class="empty-state">Noch keine Clips vorhanden.</div>
         </div>
       </div>
     </div>
@@ -143,6 +156,21 @@
       }
       return `<span class="clip-tag">🎬 ${label}</span>`;
     }).join('') + '</div>';
+  }
+
+  function renderClipsModal(runs){
+    const body = document.getElementById('clips-modal-body');
+    const runsWithClips = runs.filter(r => r.clips && r.clips.length);
+    if(!runsWithClips.length){
+      body.innerHTML = '<div class="empty-state">Noch keine Clips vorhanden.</div>';
+      return;
+    }
+    body.innerHTML = runsWithClips.map(r => `
+      <div class="clips-run-group">
+        <div class="clips-run-heading">Versuch #${r.attempt}</div>
+        ${clipBadges(r.clips)}
+      </div>
+    `).join('');
   }
 
   function bossList(bosses){
@@ -207,6 +235,8 @@
         </table>
       `;
     }
+
+    renderClipsModal(runs);
 
     document.getElementById('refresh-status').textContent =
       'aktualisiert um ' + new Date().toLocaleTimeString('de-DE');
