@@ -1,16 +1,3 @@
-// ── Fliegende 7TV-Emotes im Hintergrund ──────────────────────────────
-// Trag unten bei "urls" einfach die direkten Bild-Links deiner Emotes ein.
-//
-// So kommst du an den Link:
-//   1. Emote auf https://7tv.app suchen und öffnen
-//   2. Unter "Download" die gewünschte Größe wählen (z.B. "4x") und den
-//      Link kopieren — oder per Rechtsklick auf das Vorschaubild
-//      "Grafikadresse kopieren" wählen
-//   3. Link hier in die Liste einfügen, z.B.:
-//      'https://cdn.7tv.app/emote/01ABCDEFGH.../4x.webp'
-//   Animierte Emotes (.gif / animiertes .webp) funktionieren genauso wie
-//   statische — der Browser spielt die Animation automatisch ab.
-//
 const EMOTE_BG_CONFIG = {
   enabled: true,          // auf false setzen, um den Hintergrund komplett auszuschalten
 
@@ -26,7 +13,7 @@ const EMOTE_BG_CONFIG = {
     'https://cdn.7tv.app/emote/01JT6BRNXNMNNME48GTHG1WJ21/2x.webp',
   ],
 
-  count: 16,               // wie viele Emote-Sprites gleichzeitig fliegen
+  count: 24,               // wie viele Emote-Sprites gleichzeitig fliegen
                             // (bei weniger URLs als "count" werden Emotes wiederholt)
   minSize: 40,              // kleinste Kantenlänge in px
   maxSize: 88,              // größte Kantenlänge in px
