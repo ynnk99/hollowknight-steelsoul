@@ -14,7 +14,7 @@ const EMOTE_BG_CONFIG = {
     'https://cdn.7tv.app/emote/01HVPR7KHG00084NQRB9SM3D94/2x.webp',
   ],
 
-  count: 24,               // wie viele Emote-Sprites gleichzeitig fliegen
+  count: 16,               // wie viele Emote-Sprites gleichzeitig fliegen
                             // (bei weniger URLs als "count" werden Emotes wiederholt)
   minSize: 40,              // kleinste Kantenlänge in px
   maxSize: 88,              // größte Kantenlänge in px
