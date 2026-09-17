@@ -86,6 +86,15 @@ body::after{
 
 .page-wrapper{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:34px 20px 90px;}
 
+/* ── Fliegende Emotes (Hintergrund) ── */
+.emote-bg{
+  position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+}
+.emote-sprite{
+  position:absolute; top:0; left:0; height:auto; will-change:transform;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+
 /* ── Header ── */
 .site-header{text-align:center;padding:10px 0 28px;position:relative;}
 .site-header .emblem{
@@ -163,7 +172,7 @@ body::after{
 }
 .ss-stat:hover{border-color:var(--border-bright); transform:translateY(-1px);}
 .ss-stat .num{font-family:'Cinzel',serif; font-size:33px; color:var(--accent-bright); font-weight:700;}
-.ss-stat .lbl{font-size:14px; color:var(--ink-dim); font-style:italic; margin-top:5px; letter-spacing:0.03em;}
+.ss-stat .lbl{font-size:12px; color:var(--ink-dim); font-style:italic; margin-top:5px; letter-spacing:0.03em;}
 .ss-stat.pb .num{color:var(--void-bright);}
 .ss-stat.pb::before{background:linear-gradient(90deg,transparent,var(--void),transparent);}
 .ss-stat.fail .num{color:var(--red-bright);}
@@ -180,7 +189,7 @@ body::after{
 .section-head .icon{font-size:19px; width:26px; text-align:center; opacity:0.9;}
 .section-head .titles{flex:1;}
 .section-head h2{font-family:'Cinzel',serif; font-size:16.5px; color:var(--ink-bright); font-weight:600; letter-spacing:0.03em;}
-.section-head .sub{font-size:14px; color:var(--ink-dim); font-style:italic; margin-top:2px;}
+.section-head .sub{font-size:12px; color:var(--ink-dim); font-style:italic; margin-top:2px;}
 .section-divider{height:1px; background:linear-gradient(90deg,transparent,var(--border-bright),transparent); margin:0 20px;}
 .section-body{padding:6px 20px 20px;}
 
