@@ -130,7 +130,7 @@ body::after{
     var(--bg-panel);
   border:1px solid var(--border-gold);
   border-radius:12px;
-  box-shadow:0 0 50px rgba(127,214,206,0.06), inset 0 0 0 1px rgba(255,255,255,0.02);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02);
 }
 .hero-plaque .corner-tl,.hero-plaque .corner-tr,.hero-plaque .corner-bl,.hero-plaque .corner-br{
   content:""; position:absolute; width:11px; height:11px; border:1px solid var(--gold); opacity:0.6;
