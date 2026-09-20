@@ -209,6 +209,20 @@ body::after{
 .explainer-rule.rule-goal h3{color:var(--green-bright);}
 .explainer-note{margin-top:20px; font-size:12.5px; font-style:italic; color:var(--ink-dim);}
 
+/* einklappbar (details/summary) – Pfeil zeigt nach unten = zu, nach oben = offen */
+.explainer-toggle{cursor:pointer; list-style:none; user-select:none;}
+.explainer-toggle::-webkit-details-marker{display:none;}
+.explainer-toggle:focus-visible{outline:2px solid var(--accent); outline-offset:-4px; border-radius:var(--radius);}
+.explainer-toggle .chev{
+  flex-shrink:0; width:9px; height:9px; margin-right:6px; position:relative; top:-2px;
+  border-right:1.5px solid var(--ink-dim); border-bottom:1.5px solid var(--ink-dim);
+  transform:rotate(45deg); transition:transform .2s, border-color .15s;
+}
+.explainer[open] .explainer-toggle .chev{transform:rotate(-135deg); top:2px;}
+.explainer-toggle:hover .chev{border-color:var(--accent-bright);}
+.explainer-toggle:hover h2{color:var(--accent-bright);}
+@media (prefers-reduced-motion:reduce){.explainer-toggle .chev{transition:none;}}
+
 /* ── Death-cause bars ── */
 .ss-causes{display:flex; flex-direction:column; gap:8px;}
 .ss-cause-row{display:flex; align-items:center; gap:12px; font-size:13.5px;}
