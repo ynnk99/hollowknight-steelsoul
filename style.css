@@ -193,6 +193,22 @@ body::after{
 .section-divider{height:1px; background:linear-gradient(90deg,transparent,var(--border-bright),transparent); margin:0 20px;}
 .section-body{padding:6px 20px 20px;}
 
+/* ── Erklärung: Was ist ein Steel-Soul-Run? ── */
+.explainer-lead{font-size:15.5px; line-height:1.7; color:var(--ink); max-width:68ch; margin:14px 0 18px;}
+.explainer-rules{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px 22px;}
+/* linke Linie wie in der Tabelle: Türkis = läuft, Rot = gescheitert, Grün = geschafft */
+.explainer-rule{padding:2px 0 2px 14px; border-left:2px solid var(--accent);}
+.explainer-rule h3{
+  font-family:'Cinzel',serif; font-size:13.5px; font-weight:600; letter-spacing:0.04em;
+  color:var(--accent-bright); margin-bottom:5px;
+}
+.explainer-rule p{font-size:13.5px; line-height:1.65; color:var(--ink);}
+.explainer-rule.rule-death{border-left-color:var(--red);}
+.explainer-rule.rule-death h3{color:var(--red-bright);}
+.explainer-rule.rule-goal{border-left-color:var(--green-bright);}
+.explainer-rule.rule-goal h3{color:var(--green-bright);}
+.explainer-note{margin-top:20px; font-size:12.5px; font-style:italic; color:var(--ink-dim);}
+
 /* ── Death-cause bars ── */
 .ss-causes{display:flex; flex-direction:column; gap:8px;}
 .ss-cause-row{display:flex; align-items:center; gap:12px; font-size:13.5px;}
