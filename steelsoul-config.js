@@ -77,6 +77,7 @@ const STEELSOUL_CONFIG = {
     igt:        ['ingame-zeit', 'ingame zeit', 'igt', 'zeit'],
     nail:       ['nagel-level', 'nagel', 'nail'],
     note:       ['notiz', 'note', 'kommentar'],
+    percent:    ['prozent', 'percent', 'fortschritt'],
   },
 
   // Spalte B enthält ein Emoji statt Text. So wird es erkannt:

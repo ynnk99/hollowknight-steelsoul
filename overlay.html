@@ -116,6 +116,7 @@
       </div>
       <div class="info-block">
         <div class="info-row"><span class="k">Bosse (aktuell)</span><span class="v" id="ov-bosses">–</span></div>
+        <div class="info-row percent" id="ov-percent-row" style="display:none;"><span class="k">Fortschritt</span><span class="v" id="ov-percent">–</span></div>
         <div class="info-row pb"><span class="k">PB</span><span class="v" id="ov-pb">–</span></div>
       </div>
     </div>
@@ -177,6 +178,12 @@
 <script>
   function bossLabel(n){ return n + (n === 1 ? ' Boss' : ' Bosse'); }
 
+  // "80" / "80%" / "80,5 %" → "80 %" bzw. "80,5 %". Leer → ''.
+  function formatPercent(raw){
+    const v = (raw || '').toString().trim().replace(/\s*%$/, '');
+    return v ? v + ' %' : '';
+  }
+
   function renderTicker(trackEl, bosses){
     if(!bosses || !bosses.length){ trackEl.innerHTML = ''; return; }
     const items = bosses.map(b => `<span>${b}</span>`).join('');
@@ -201,6 +208,11 @@
       document.getElementById('ov-attempt').textContent = stats.currentAttempt ?? '–';
       document.getElementById('ov-pb').textContent = stats.bestBossesKilled ? bossLabel(stats.bestBossesKilled) : '–';
       document.getElementById('ov-bosses').textContent = current ? bossLabel(current.bossesKilled) : '–';
+
+      // Prozent aus Spalte D – nur anzeigen, wenn beim aktuellen Run was drinsteht
+      const percent = formatPercent(current && current.percent);
+      document.getElementById('ov-percent-row').style.display = percent ? 'flex' : 'none';
+      document.getElementById('ov-percent').textContent = percent;
     }
   }
   SteelSoul.startPolling(renderSteelSoul, (err) => console.error('Steel Soul Overlay:', err));

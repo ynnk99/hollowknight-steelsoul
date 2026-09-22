@@ -100,6 +100,7 @@ const SteelSoul = (function () {
         igt: get('igt'),
         nail: get('nail'),
         note: get('note'),
+        percent: get('percent'),     // Spielfortschritt in %, leer = nicht eingetragen
         bosses,
         bossesKilled: bosses.length,
         clips: clipsByAttempt[attempt] || [],
