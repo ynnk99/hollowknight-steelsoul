@@ -123,6 +123,7 @@
 
     <div class="clear-summary" id="ss-clear">
       <div class="clear-label">Geschafft im <span id="ss-clear-attempt">–</span>. Versuch</div>
+      <div class="clear-value" id="ss-clear-percent" style="display:none;">–</div>
       <div class="clear-sub" id="ss-clear-count">0 Bosse besiegt</div>
       <div class="ticker-wrap" id="ss-ticker-wrap"><div class="ticker-track" id="ss-ticker-track"></div></div>
     </div>
@@ -203,6 +204,12 @@
     if(isSuccess){
       document.getElementById('ss-clear-attempt').textContent = current.attempt;
       document.getElementById('ss-clear-count').textContent = bossLabel(current.bossesKilled) + ' besiegt';
+
+      // Prozent aus Spalte D – nur anzeigen, wenn beim geschafften Run was drinsteht
+      const clearPercent = formatPercent(current.percent);
+      const clearPercentEl = document.getElementById('ss-clear-percent');
+      clearPercentEl.style.display = clearPercent ? 'block' : 'none';
+      clearPercentEl.textContent = clearPercent;
       renderTicker(document.getElementById('ss-ticker-track'), current.bosses);
     } else {
       document.getElementById('ov-attempt').textContent = stats.currentAttempt ?? '–';
