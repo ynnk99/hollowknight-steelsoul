@@ -56,13 +56,24 @@ const PantheonSoul = (function () {
     };
   }
 
-  // ── Silksong: einfacher Tode-/Bosse-Zähler ──
+  // Zerlegt den Inhalt von C2 in einzelne Bossnamen. Erlaubte Trenner:
+  // Zeilenumbruch (Alt+Enter im Sheet), Komma, Semikolon.
+  function parseBossList(raw) {
+    return (raw || '').toString()
+      .split(/\r?\n|;|,/)
+      .map(s => s.trim())
+      .filter(Boolean);
+  }
+
+  // ── Silksong: Tode-/Bosse-Zähler + Boss-Liste ──
   async function fetchSilksongState() {
     const rows = await fetchCsvRows(STEELSOUL_CONFIG.silksongCsvUrl);
     const cells = STEELSOUL_CONFIG.silksongCells;
     return {
       deaths: parsePlainInt(cellValue(rows, cells.deaths)),
       bosses: parsePlainInt(cellValue(rows, cells.bosses)),
+      bossList: cells.bossList ? parseBossList(cellValue(rows, cells.bossList)) : [],
+      showBossesNow: cells.showBossesNow ? isChecked(cellValue(rows, cells.showBossesNow)) : false,
     };
   }
 

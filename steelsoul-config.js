@@ -27,12 +27,22 @@ const STEELSOUL_CONFIG = {
   },
 
   // Tabellenblatt "Silksong": A1/B1 = Überschriften "Tode"/"Bosse",
-  // A2 = Anzahl Tode, B2 = Anzahl besiegter Bosse. Ganz simpler Zähler,
-  // kann später erweitert werden.
+  // A2 = Anzahl Tode, B2 = Anzahl besiegter Bosse.
+  // C2 = Liste der besiegten Bosse (eine Zelle; Namen per Zeilenumbruch,
+  //      Komma oder Semikolon getrennt – z.B. per TEXTJOIN-Formel).
+  // D1 = Checkbox: Boss-Liste sofort (und dauerhaft in Schleife) anzeigen.
   silksongCsvUrl: 'https://docs.google.com/spreadsheets/d/1e_Y7ugMwyxYiwd5p4ZV0WezsmUH40fDiCSrIMtvQfVs/export?format=csv&gid=2025660023',
   silksongCells: {
-    deaths: 'A2',
-    bosses: 'B2',
+    deaths:        'A2',
+    bosses:        'B2',
+    bossList:      'C2',
+    showBossesNow: 'D1',
+  },
+  // Boss-Durchlauf im Silksong-Overlay: Die Bosse aus C2 werden nacheinander
+  // eingeblendet, danach geht's zurück zur Tode/Bosse-Anzeige.
+  silksongBossShowcase: {
+    intervalMs: 3 * 60 * 1000, // automatisch alle 3 Minuten (gezählt ab Ende des letzten Durchlaufs)
+    perBossMs:  3500,          // so lange steht jeder einzelne Boss im Bild
   },
 
   // Tabellenblatt "Pantheons": Bereich Q1:T51 = Pantheon-5-Versuche,
