@@ -568,7 +568,33 @@
       const x = (areaW - w * scale) / 2, y = (areaH - h * scale) / 2;
       box.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
     });
+    reportContentSize();
   }
+  // ── Größe an die einbettende Seite melden (Overlay-Control/-Display) ──
+  //  Ist das Overlay als iFrame eingebettet, schickt es die Größe der
+  //  sichtbaren Box per postMessage an die Elternseite. Die passt dann ihren
+  //  Rahmen daran an – so wird nichts abgeschnitten, wenn eine Ansicht größer ist.
+  let _lastReportedSize = '';
+  function reportContentSize(){
+    if(window.parent === window || FIT_TARGET === 'window') return;
+    let w, h;
+    if(FIT_TARGET){ w = FIT_TARGET.w; h = FIT_TARGET.h; }
+    else {
+      const box = [...document.querySelectorAll('.overlay-box')].find(b => b.style.display !== 'none');
+      if(!box) return;                         // gerade nichts sichtbar → letzte Größe behalten
+      const r = box.getBoundingClientRect();
+      w = Math.ceil(r.width); h = Math.ceil(r.height);
+    }
+    if(!w || !h) return;
+    const key = w + 'x' + h;
+    if(key === _lastReportedSize) return;
+    _lastReportedSize = key;
+    window.parent.postMessage({ type: 'overlay-content-size', width: w, height: h }, '*');
+  }
+  // Elternseite kann die Größe jederzeit neu anfordern (z.B. nach eigenem Reload)
+  window.addEventListener('message', (e) => {
+    if(e.data && e.data.type === 'overlay-content-size-request'){ _lastReportedSize = ''; reportContentSize(); }
+  });
   window.addEventListener('resize', fitOverlay);
   // Inhalt ändert sich (Namen, Zahlen, Ansicht geschafft/laufend) → neu einpassen
   if(window.ResizeObserver){
