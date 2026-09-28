@@ -131,26 +131,27 @@
   }
 
   /* ── Silksong: Boss-Durchlauf ──
-     Beide Panels liegen per Grid übereinander in derselben Zelle. Der
-     Showcase trägt mit width:0/min-width:100% nichts zur Breite bei, dadurch
-     bleibt die Box exakt so breit wie die normale Tode/Bosse-Anzeige und
-     springt beim Umschalten nicht. Lange Namen brechen einfach um. */
-  .sk-stage{display:grid;}
-  .sk-panel{grid-area:1 / 1; transition:opacity .6s ease;}
+     Der Showcase liegt absolut über der normalen Tode/Bosse-Anzeige und
+     trägt damit weder zur Breite noch zur Höhe der Box bei: die Box bleibt
+     beim Umschalten exakt gleich groß. Lange Namen werden stattdessen per
+     JS (fitBossName) kleiner gesetzt, damit sie hineinpassen. */
+  .sk-stage{position:relative;}
+  .sk-panel{transition:opacity .6s ease;}
   .sk-showcase{
-    width:0; min-width:100%;
+    position:absolute; inset:0;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-    text-align:center; opacity:0;
+    text-align:center; opacity:0; overflow:hidden;
   }
   .sk-stage.is-showcase #sk-normal{opacity:0;}
   .sk-stage.is-showcase .sk-showcase{opacity:1;}
   .sk-boss-name{
     font-family:'Cinzel',serif; font-size:32px; font-weight:700; line-height:1.15;
     color:#c3f5ee; text-shadow:0 0 22px rgba(127,214,206,0.55);
-    text-wrap:balance; overflow-wrap:anywhere;
+    max-width:100%; white-space:nowrap;
     transition:opacity .4s ease, transform .4s ease;
   }
   .sk-boss-name.is-out{opacity:0; transform:translateY(8px);}
+  .sk-boss-name.is-wrapped{white-space:normal; text-wrap:balance; overflow-wrap:anywhere;}
   .sk-boss-count{font-family:'Cinzel',serif; font-size:14px; color:#9fb3ba; letter-spacing:0.08em; font-variant-numeric:tabular-nums;}
 </style>
 </head>
@@ -448,6 +449,26 @@
     return document.getElementById('silksong-view').style.display !== 'none';
   }
 
+  // Bossname so groß wie möglich, aber immer innerhalb der Box:
+  //  1. einzeilig, Schrift schrittweise von 32 px bis 18 px verkleinern
+  //  2. passt es dann immer noch nicht → auf zwei Zeilen umbrechen und
+  //     weiter verkleinern, bis die Höhe passt
+  const SK_NAME_MAX_PX = 32, SK_NAME_MIN_PX = 18, SK_NAME_WRAP_MIN_PX = 12;
+  function fitBossName(nameEl){
+    const panel = document.getElementById('sk-showcase');
+    nameEl.classList.remove('is-wrapped');
+    let size = SK_NAME_MAX_PX;
+    nameEl.style.fontSize = size + 'px';
+    while(size > SK_NAME_MIN_PX && nameEl.scrollWidth > nameEl.clientWidth){
+      size -= 1; nameEl.style.fontSize = size + 'px';
+    }
+    if(nameEl.scrollWidth <= nameEl.clientWidth) return;
+    nameEl.classList.add('is-wrapped');
+    while(size > SK_NAME_WRAP_MIN_PX && panel.scrollHeight > panel.clientHeight){
+      size -= 1; nameEl.style.fontSize = size + 'px';
+    }
+  }
+
   function skShowBoss(i){
     const nameEl  = document.getElementById('sk-boss-name');
     const countEl = document.getElementById('sk-boss-count');
@@ -456,6 +477,7 @@
     skShowcase.timer = setTimeout(() => {
       nameEl.textContent  = list[i];
       countEl.textContent = (i + 1) + ' / ' + list.length;
+      fitBossName(nameEl);
       nameEl.classList.remove('is-out');
       skShowcase.timer = setTimeout(() => {
         if(i + 1 < list.length) skShowBoss(i + 1);
